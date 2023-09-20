@@ -1,2 +1,4 @@
 .vscode/
 myenv/
+/blog_platform/blog_platform/__pycache__/settings.cpython-310.pyc
+pass.txt
