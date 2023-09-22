@@ -1,10 +1,15 @@
-from django.shortcuts import render
 from django.http import JsonResponse
 
+# For Define API Views
 from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
-from .models import Post, Category, Tag, Comment
+from .models import Post, Category, Tag, Comment, User
 from .serializers import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer
+
+# For User Authentication
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login
+from django.shortcuts import render, redirect
 
 
 class PostListCreateView(generics.ListCreateAPIView):
@@ -55,5 +60,27 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
+class CustomUserCreateForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'last_name']
+
+
 def home(request):
     return JsonResponse({'message': 'Testing App'})
+
+# For User Authentication
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Log the user in after registration
+            return redirect('home')  # Redirect to the home page
+
+    else:
+        form = UserCreationForm()
+
+    return JsonResponse({'form': form})
