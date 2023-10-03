@@ -12,6 +12,7 @@ router.register(r'comments', views.CommentViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('postlist', views.PostListCreateView.as_view(), name='postlist'),
+    path('posts/<int:postId>/', views.PostDetailView.as_view(), name='post_detail'),
 
     # Start - User Authenticatio Related Urls
     path('register', views.register, name='user-registration'),
