@@ -1,11 +1,15 @@
 import React, { useState, useEffect} from "react";
 import axios from "axios";
+import API_BASE_URL from '../config';
+import LogOut from "./Auth/LogOut";
+import token from "./Auth/Token";
 
 const BlogPostList = () => {
+
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8000/api/postlist`)
+        axios.get(`${API_BASE_URL}/api/postlist`)
         .then(response => {
             setPosts(response.data);
         })
@@ -27,6 +31,7 @@ const BlogPostList = () => {
     return(
         <div>
             <h1>Articles</h1>
+            <div>{token && <LogOut />}</div>
             <ul>
                 {posts.map(post => (
                     <li key={post.id}>

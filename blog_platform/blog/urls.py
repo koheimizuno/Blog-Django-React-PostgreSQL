@@ -12,12 +12,15 @@ router.register(r'comments', views.CommentViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('postlist', views.PostListCreateView.as_view(), name='postlist'),
-    path('posts/<int:postId>/', views.PostDetailView.as_view(), name='post_detail'),
+    path('postlist/<int:id>/',
+         views.PostDetailView.as_view(), name='post_detail'),
 
     # Start - User Authenticatio Related Urls
-    path('register', views.register, name='user-registration'),
-    path('login', auth_views.LoginView.as_view(), name='login'),
-    path('logout', auth_views.LogoutView.as_view(), name='logout'),
+    path('token', views.CustomAuthToken.as_view(), name='token_obtain'),
+    path('logout', views.LogOutView.as_view(), name='logout'),
+
+    path('register', views.register, name='user_registration'),
+
     path('password-reset/', auth_views.PasswordResetView.as_view(),
          name='password_reset'),
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(),
