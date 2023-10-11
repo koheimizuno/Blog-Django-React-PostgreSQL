@@ -1,13 +1,14 @@
 from django.http import JsonResponse
 
 # For Define API Views
-from rest_framework import generics, viewsets, status, permissions
+from rest_framework import generics, viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.authtoken.views import ObtainAuthToken, APIView
 from rest_framework.authtoken.models import Token
+from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
 from .models import Post, Category, Tag, Comment, User
-from .serializers import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer
+from .serializers import PostSerializer, CategorySerializer, TagSerializer, CommentSerializer, UserSerializer
 
 # For User Authentication
 from django.contrib.auth.forms import UserCreationForm
@@ -40,7 +41,7 @@ class PostDetailView(generics.RetrieveAPIView):
 
 class CategoryListCreateView(generics.ListCreateAPIView):
     queryset = Category.objects.all()
-    serializer = CategorySerializer
+    serializer_class = CategorySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
@@ -52,25 +53,25 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class TagListCrateView(generics.ListCreateAPIView):
     queryset = Tag.objects.all()
-    serializer = TagSerializer
+    serializer_class = TagSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
-    serializer = TagSerializer
+    serializer_class = TagSerializer
     permission_classes = [IsAuthenticated]
 
 
 class CommentListCreateView(generics.ListCreateAPIView):
     queryset = Comment.objects.all()
-    serializer = CommentSerializer
+    serializer_class = CommentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
-    serializer = CommentSerializer
+    serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated]
 
 
@@ -97,8 +98,18 @@ class CustomAuthToken(ObtainAuthToken):
         return Response({'token': token.key})
 
 
-class LogOutView(APIView):
+class UserRegistrationView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
+    def perform_create(self, serializer):
+        hashed_password = make_password(serializer.validated_data['password'])
+        serializer.validated_data['password'] = hashed_password
+        user = serializer.save()
+        Token.objects.create(user=user)
+
+
+class LogOutView(APIView):
     permission_class = [IsAuthenticated]
 
     def post(self, request):

@@ -17,6 +17,7 @@ urlpatterns = [
 
     # Start - User Authenticatio Related Urls
     path('token', views.CustomAuthToken.as_view(), name='token_obtain'),
+    path('register', views.UserRegistrationView.as_view(), name='register'),
     path('logout', views.LogOutView.as_view(), name='logout'),
 
     path('register', views.register, name='user_registration'),

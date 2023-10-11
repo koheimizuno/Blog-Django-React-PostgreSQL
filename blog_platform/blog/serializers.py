@@ -17,7 +17,22 @@ class TagSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password', 'first_name', 'last_name')
+        extra_kwargs = {'password': {'write_only': True}}
+
+    # validation for exisiting usernames and email addresses.
+    def validate(self, data):
+        username = data.get('username')
+        email = data.get('email')
+
+        if User.objects.filter(username=username).exists():
+            raise serializers.ValidationError(
+                {'username': 'Username already exists'})
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError(
+                {'email': 'Email Address already exists'})
+
+        return data
 
 
 class PostSerializer(serializers.ModelSerializer):
