@@ -1,4 +1,5 @@
 import React, { useState} from "react";
+import { Link } from 'react-router-dom'
 import axios from "axios";
 import API_BASE_URL from "../../config";
 
@@ -67,6 +68,7 @@ const Register = () => {
                 <input type="password" name="confirm_password" placeholder="Confirm Password" value={formData.confirm_password} onChange={handleChange} />
                 <button type="submit">Sign Up</button>
             </form>
+            <div>Already a member? <Link to='/login'>Login here.</Link></div>
         </> 
     )
 }
