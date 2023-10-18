@@ -1,3 +1,4 @@
 const token = localStorage.getItem('token');
+const userData = localStorage.getItem('userData')
 
-export default token;
+export {token, userData};

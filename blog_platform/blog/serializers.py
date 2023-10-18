@@ -35,6 +35,22 @@ class UserSerializer(serializers.ModelSerializer):
         return data
 
 
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+       # Check if the email exists in your database
+        try:
+            user = User.objects.get(email=value)
+            print(user)
+
+        except User.DoesNotExist:
+            raise serializers.ValidationError(
+                "Email address not found in our database.")
+
+        return value
+
+
 class PostSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     author = UserSerializer()

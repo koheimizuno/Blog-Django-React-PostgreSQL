@@ -19,15 +19,14 @@ urlpatterns = [
     path('token', views.CustomAuthToken.as_view(), name='token_obtain'),
     path('register', views.UserRegistrationView.as_view(), name='register'),
     path('logout', views.LogOutView.as_view(), name='logout'),
+    path('password_reset', views.password_reset, name='password_reset'),
+    path('password_reset/confirm/<str:uidb64>/<str:token>/',
+         views.password_reset_confirm, name='password_reset_confirm'),
 
-    path('register', views.register, name='user_registration'),
 
-    path('password-reset/', auth_views.PasswordResetView.as_view(),
-         name='password_reset'),
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(),
          name='password_reset_done'),
-    path('password-reset-confirm/<uidb64>/<token>/',
-         auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
     path('password-reset-complete/', auth_views.PasswordResetCompleteView.as_view(),
          name='password_reset_complete'),
     # END - User Authenticatio Related Urls

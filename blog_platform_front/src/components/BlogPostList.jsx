@@ -2,7 +2,7 @@ import React, { useState, useEffect} from "react";
 import axios from "axios";
 import API_BASE_URL from '../config';
 import LogOut from "./Auth/LogOut";
-import token from "./Auth/Token";
+import {token} from "./Auth/Token";
 
 const BlogPostList = () => {
 

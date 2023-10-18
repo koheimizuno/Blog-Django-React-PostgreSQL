@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import API_BASE_URL from '../../config';
-import token from "./Token";
+import { token, userData} from "./Token";
 
 const LogOut = () => {
     const handleLogout = async () => {   
@@ -10,6 +10,7 @@ const LogOut = () => {
             if(token){
                 await axios.post(`${API_BASE_URL}/api/logout`, null, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'application/json',}});
                 localStorage.removeItem('token');
+                localStorage.removeItem(userData)
                 window.location.href = '/login';
             }
                 
