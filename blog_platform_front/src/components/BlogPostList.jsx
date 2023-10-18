@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from "react";
 import axios from "axios";
 import API_BASE_URL from '../config';
+import LoginButton from "./Auth/LoginButton"
 import LogOut from "./Auth/LogOut";
 import {token} from "./Auth/Token";
 
@@ -31,7 +32,7 @@ const BlogPostList = () => {
     return(
         <div>
             <h1>Articles</h1>
-            <div>{token && <LogOut />}</div>
+            <div>{token?( <LogOut />): (<LoginButton />)}</div>
             <ul>
                 {posts.map(post => (
                     <li key={post.id}>
