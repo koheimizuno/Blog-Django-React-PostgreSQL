@@ -1,4 +1,4 @@
-import BlogPostList from '../components/BlogPostList';
+import BlogPostList from '../components/BlogPosts/BlogPostList';
 
 const HomePage = () => {
     return(

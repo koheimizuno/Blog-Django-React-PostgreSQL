@@ -1,9 +1,11 @@
 import React, { useState, useEffect} from "react";
 import axios from "axios";
-import API_BASE_URL from '../config';
-import LoginButton from "./Auth/LoginButton"
-import LogOut from "./Auth/LogOut";
-import {token} from "./Auth/Token";
+import DOMPurify from 'dompurify';
+import API_BASE_URL from '../../config';
+import LoginButton from "../Auth/LoginButton"
+import LogOut from "../Auth/LogOut";
+import {token} from "../Auth/Token";
+import DashboadButton from "./DashboardButton";
 
 const BlogPostList = () => {
 
@@ -32,12 +34,14 @@ const BlogPostList = () => {
     return(
         <div>
             <h1>Articles</h1>
-            <div>{token?( <LogOut />): (<LoginButton />)}</div>
+            <div>{token 
+            ? <> <DashboadButton />  <LogOut /> </>
+            : <LoginButton /> }</div>
             <ul>
                 {posts.map(post => (
                     <li key={post.id}>
                         <a href={`/posts/${post.id}`}>{post.title}</a>
-                        <p>{getPostReadMore(post.content)}</p>
+                        <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />
                         <a href={`/posts/${post.id}`}>Read More</a>
                     </li>
                 ))}

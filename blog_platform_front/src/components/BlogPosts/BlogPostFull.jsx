@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import API_BASE_URL from '../config';
+import API_BASE_URL from '../../config';
 import { useParams } from "react-router-dom";
 
 const BlogPostFull = () =>{
@@ -17,13 +17,16 @@ const BlogPostFull = () =>{
             ${error}`);
         })
     },[]);
-
+    console.log(post)
     return(
+        
         <div className="article-div">
-            <h2>Test</h2>
             <h1>{post && post.title}</h1>
+            <div className="post_image">
+                {post && <img src={`${post.image}`} alt={post.title} /> }
+            </div>
             <div className="article-content">
-                {post && post.content}
+                {post &&  <p dangerouslySetInnerHTML={{ __html: post.content }} />}
             </div>
             <a href='/'>Back To Article List</a>
         </div>

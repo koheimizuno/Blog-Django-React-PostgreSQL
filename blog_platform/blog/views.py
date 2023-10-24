@@ -10,11 +10,8 @@ from .serializers import PostSerializer, CategorySerializer, TagSerializer, Comm
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.authtoken.views import ObtainAuthToken, APIView
 from rest_framework.authtoken.models import Token
-from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
-from django.contrib.auth import login
-from django.shortcuts import render, redirect
 
 # For PasswordRest
 from rest_framework.decorators import api_view, permission_classes
@@ -27,20 +24,13 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 
 
-class PostListCreateView(generics.ListCreateAPIView):
+class PostListView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
-class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-    permission_classes = [IsAuthenticated]
-
-
 class PostDetailView(generics.RetrieveAPIView):
-
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     lookup_field = 'id'
@@ -48,6 +38,12 @@ class PostDetailView(generics.RetrieveAPIView):
     def get_queryset(self):
         query = Post.objects.filter(id=self.kwargs.get('id'))
         return query
+
+
+class PostModelViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class CategoryListCreateView(generics.ListCreateAPIView):

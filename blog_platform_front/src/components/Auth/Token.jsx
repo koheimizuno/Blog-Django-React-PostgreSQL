@@ -1,4 +1,5 @@
 const token = localStorage.getItem('token');
-const userData = localStorage.getItem('userData')
+const userDataJSON = localStorage.getItem('userData')
+const userData = userDataJSON ? JSON.parse(userDataJSON) : null
 
 export {token, userData};
