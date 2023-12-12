@@ -40,7 +40,8 @@ const BlogPostList = () => {
             <ul>
                 {posts.map(post => (
                     <li key={post.id}>
-                        <a href={`/posts/${post.id}`}>{post.title}</a>
+                        <h1><a href={`/posts/${post.id}`}>{post.title}</a></h1>
+                        <p><em>{post.author.username}</em></p>
                         <p dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(getPostReadMore(post.content)) }} />
                         <a href={`/posts/${post.id}`}>Read More</a>
                     </li>

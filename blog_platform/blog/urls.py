@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 
 
 router = DefaultRouter()
-router.register(r'posts', views.PostModelViewSet)
+router.register(r'my_posts', views.PostModelViewSet)
 router.register(r'categories', views.CategoryViewSet)
 router.register(r'tags', views.TagViewSet)
 router.register(r'comments', views.CommentViewSet)
@@ -15,8 +15,6 @@ urlpatterns = [
     path('postlist', views.PostListView.as_view(), name='postlist'),
     path('postlist/<int:id>/',
          views.PostDetailView.as_view(), name='post_detail'),
-
-
 
     # Start - User Authenticatio Related Urls
     path('token', views.CustomAuthToken.as_view(), name='token_obtain'),

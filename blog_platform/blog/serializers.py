@@ -52,6 +52,9 @@ class PasswordResetSerializer(serializers.Serializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
+
+    author = UserSerializer()
+
     class Meta:
         model = Post
         fields = '__all__'

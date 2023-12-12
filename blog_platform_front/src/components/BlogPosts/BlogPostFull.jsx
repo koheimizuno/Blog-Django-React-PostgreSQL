@@ -17,14 +17,17 @@ const BlogPostFull = () =>{
             ${error}`);
         })
     },[]);
-    console.log(post)
+    
     return(
         
         <div className="article-div">
             <h1>{post && post.title}</h1>
-            <div className="post_image">
-                {post && <img src={`${post.image}`} alt={post.title} /> }
-            </div>
+            <p><em>{post && post.author.username}</em></p>
+            {post && post.image && 
+                <div className="post_image">
+                    {post && <img src={`${post.image}`} alt={post.title} /> }
+                </div>
+            }            
             <div className="article-content">
                 {post &&  <p dangerouslySetInnerHTML={{ __html: post.content }} />}
             </div>

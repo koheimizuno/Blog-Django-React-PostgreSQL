@@ -24,12 +24,14 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
 
 
+# List all Post Public
 class PostListView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
+# View Post Details Public
 class PostDetailView(generics.RetrieveAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -40,10 +42,17 @@ class PostDetailView(generics.RetrieveAPIView):
         return query
 
 
+# List Posts Private
 class PostModelViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Post.objects.filter(author=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class CategoryListCreateView(generics.ListCreateAPIView):
@@ -82,16 +91,15 @@ class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
 
+def home(request):
+    return JsonResponse({'message': 'Testing App'})
+
+
+# For User Authentication
 class CustomUserCreateForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['email', 'first_name', 'last_name']
-
-
-def home(request):
-    return JsonResponse({'message': 'Testing App'})
-
-# For User Authentication
 
 
 class CustomAuthToken(ObtainAuthToken):
