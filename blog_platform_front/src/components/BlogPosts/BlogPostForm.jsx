@@ -21,6 +21,7 @@ const BlogPostForm = () => {
     const [categories, setCategories]= useState([])
     const [tags, setTags]= useState([])
     const [error, setError] = useState('')
+    const [authorDetails,setAuthorDetails] = useState({})
 
     useEffect(() => {
         if(isEditing){
@@ -53,8 +54,19 @@ const BlogPostForm = () => {
             setError(`Error fetching tags: ${error}`)
             console.error(`Error fetching tags: ${error}`);
         })
-    }, [id, isEditing]);
 
+        //Fetch Author Details
+        axios.get(`${API_BASE_URL}/api/users/${formData.author}`, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'application/json',}})
+        .then(response => {
+            const fetchedAuthorDetails = response.data;
+            setAuthorDetails(fetchedAuthorDetails)
+        })
+        .catch(error => {
+            console.error(`Error fetching author data: ${error}`);
+        });
+        
+    }, [id, isEditing]);
+    
     const handleChange = (e) => {
         const { name, value, type } = e.target
         if(type === 'checkbox'){
@@ -98,6 +110,7 @@ const BlogPostForm = () => {
         formData.tags.forEach((tagId) => {
             postData.append('tags', tagId);
         })
+        
         if(id){
             //Update blog post
             axios.put(`${API_BASE_URL}/api/posts/${id}/`, postData, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}})
@@ -108,7 +121,7 @@ const BlogPostForm = () => {
                 setError(`Error updating blog post: ${error}`)
                 console.error(`Error updating blog post: ${error}`);
             })
-        }else{
+        }else{ 
             axios.post(`${API_BASE_URL}/api/posts/`, postData, {headers: {Authorization: `Token ${token}`, 'Content-Type': 'multipart/form-data',}})
             .then(response => {
                 navigate('/')
@@ -116,6 +129,7 @@ const BlogPostForm = () => {
             .catch(error => {
                 setError(`Error creating blog post: ${error}`)
                 console.error(`Error creating blog post: ${error}`);
+                console.error('Error response:', error.response)
             })
         }      
     }
@@ -124,6 +138,7 @@ const BlogPostForm = () => {
         <div>
             <h1>{isEditing ? 'Edit Blog Post' : 'Create New Blog Post'}</h1>
             {error && <div>{error}</div>}
+            <div><em>Author: {authorDetails.username}</em></div>
             <form onSubmit={handleSubmission}>
                 <div>
                     <label htmlFor='title'>Title</label>

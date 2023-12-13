@@ -53,7 +53,7 @@ class PasswordResetSerializer(serializers.Serializer):
 
 class PostSerializer(serializers.ModelSerializer):
 
-    author = UserSerializer()
+    author = UserSerializer(read_only=True)
 
     class Meta:
         model = Post
