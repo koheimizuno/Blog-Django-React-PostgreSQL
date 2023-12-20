@@ -2,7 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import BlogPostFull from './components/BlogPosts/BlogPostFull';
-import LogIn from './components/Auth/LogIn'
+import LogIn from './components/Auth/Login'
 import Register from './components/Auth/Register';
 import PasswordReset from './components/Auth/PasswordRest';
 import PasswordResetConfirmation from './components/Auth/PasswordResetConfirmation';
